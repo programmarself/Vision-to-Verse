@@ -33,6 +33,14 @@ if uploaded_file is not None:
 
     st.subheader("Generated Story:")
     st.write(story)
+    from transformers import pipeline
+
+# Load the text-to-speech model
+tts = pipeline("text-to-speech")
+
+# Generate audio from the story
+audio = tts(story)
+audio.save_to_file('output.wav')
 
     # Convert the story to speech
     # Example: speech_model.synthesize(story)
