@@ -3,3 +3,4 @@ Pillow
 torch
 transformers
 speech-t5
+soundfile  
