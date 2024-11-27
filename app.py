@@ -1,6 +1,5 @@
 import streamlit as st
 from PIL import Image
-import torch
 from transformers import GPT2LMHeadModel, GPT2Tokenizer, pipeline
 
 # Load the GPT-2 model and tokenizer
@@ -8,7 +7,7 @@ gpt2_model = GPT2LMHeadModel.from_pretrained('gpt2')
 gpt2_tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
 
 # Load the text-to-speech pipeline
-tts = pipeline("text-to-speech", model="EleutherAI/gpt-neo-125M")  # Example TTS model
+tts = pipeline("text-to-speech")
 
 st.title("Vision to Voice")
 st.write("Upload an image to turn it into a narrated story!")
@@ -21,8 +20,8 @@ if uploaded_file is not None:
     image = Image.open(uploaded_file)
     st.image(image, caption='Uploaded Image.', use_column_width=True)
 
-    # Placeholder for detected objects (replace with actual model predictions)
-    objects = ["a cat", "a tree"]  # Placeholder for detected objects
+    # Placeholder for detected objects
+    objects = ["a cat", "a tree"]  # Replace with actual model predictions
 
     # Step 3: Generate a story based on identified objects
     input_text = f"Create a story about {', '.join(objects)}."
@@ -34,7 +33,9 @@ if uploaded_file is not None:
     st.write(story)
 
     # Convert the story to speech
-    audio = tts(story, output_format="wav")
+    audio = tts(story)
+    
+    # Save the audio to a file
     audio_file_path = 'output.wav'
     with open(audio_file_path, 'wb') as f:
         f.write(audio['audio'])
